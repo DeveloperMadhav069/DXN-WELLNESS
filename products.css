@@ -1,0 +1,255 @@
+/* products.css */
+
+/* RESET */
+* {
+  margin: 0; padding: 0; box-sizing: border-box;
+}
+body {
+  font-family: 'Open Sans', sans-serif;
+  background: #0b1710;
+  color: #badf9f;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  scroll-behavior: smooth;
+}
+
+a {
+  color: #80b965;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  user-select: none;
+}
+a:hover, a:focus {
+  color: #a3d580;
+  outline: none;
+}
+
+/* Container & flex */
+.container {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 0 26px;
+}
+.flex-center-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@keyframes slideDownFade {
+  from {opacity:0; transform: translateY(-22px);}
+  to {opacity:1; transform: translateY(0);}
+}
+
+@keyframes fadeInUp {
+  from {opacity: 0; transform: translateY(16px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+
+@keyframes fadeInFooter {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+/* Header */
+header {
+  background-color: #214717;
+  padding: 18px 40px;
+  position: sticky;
+  top: 0;
+  box-shadow: 0 8px 22px rgb(10 39 9 / 0.7);
+  z-index: 100;
+  flex-wrap: wrap;
+}
+
+.logo a {
+  font-weight: 900;
+  font-size: 2rem;
+  color: #b7d587;
+  letter-spacing: 1px;
+  font-family: 'Trebuchet MS', sans-serif;
+  user-select: none;
+}
+
+nav {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-left: 30px;
+}
+
+nav a {
+  font-weight: 600;
+  font-size: 1.1rem;
+  padding: 8px 18px;
+  border-radius: 8px;
+  background-color: transparent;
+  color: #cce3a2;
+  box-shadow: inset 0 0 0 0 transparent;
+  transition: box-shadow 0.35s ease, color 0.3s ease;
+  user-select: none;
+  white-space: nowrap;
+  text-align: center;
+}
+nav a.active,
+nav a:hover, nav a:focus {
+  box-shadow: inset 0 -36px 0 0 #cce3a2;
+  color: #1b3405;
+  outline: none;
+  font-weight: 700;
+}
+
+/* Main products layout */
+main {
+  flex: 1;
+  padding: 54px 0 76px;
+  animation: fadeInUp 1.3s ease forwards;
+}
+
+h2 {
+  font-weight: 900;
+  color: #a7cc69;
+  font-size: 2.9rem;
+  margin-bottom: 44px;
+  text-align: center;
+  letter-spacing: 1.32px;
+  font-family: 'Playfair Display', serif;
+  text-shadow: 1px 1px 2px #507a11cc;
+}
+
+/* Products Grid */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill,minmax(280px,1fr));
+  gap: 28px;
+}
+
+/* Product Card */
+.product-card {
+  background: linear-gradient(150deg, #2d5620 0%, #6ba45e 99%);
+  border-radius: 24px;
+  box-shadow: 
+    0 5px 12px rgba(0,0,0,0.25),
+    inset 0 0 22px 3px #184602cc;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.28s ease, box-shadow 0.4s ease;
+  user-select: none;
+  cursor: default;
+  outline-offset: 4px;
+}
+.product-card:hover,
+.product-card:focus-within {
+  transform: translateY(-8px);
+  box-shadow:
+    0 15px 32px rgba(0,0,0,0.4),
+    inset 0 0 44px 5px #3d8a3bcc;
+  outline: none;
+}
+
+.product-card img {
+  width: 130px;
+  height: 130px;
+  object-fit: contain;
+  margin-bottom: 15px;
+  border-radius: 16px;
+  filter: drop-shadow(0 0 7px #3b7a2699);
+}
+
+.product-card h3 {
+  font-size: 1.45rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  text-align: center;
+  color: #d1e6af;
+  user-select: text;
+}
+
+.product-card p {
+  font-size: 1rem;
+  margin-bottom: 9px;
+  color: #d2dead;
+  font-weight: 600;
+  text-align: center;
+  user-select: text;
+}
+
+/* Benefit text */
+.benefit {
+  font-weight: 700;
+  font-style: italic;
+  color: #bad679;
+  font-size: 0.95rem;
+  margin-bottom: 18px;
+  text-align: center;
+}
+
+/* Buttons */
+.btn {
+  padding: 12px 30px;
+  color: #28450e;
+  background-color: #c5da82;
+  font-weight: 800;
+  font-size: 1.1rem;
+  border-radius: 48px;
+  border: none;
+  box-shadow: 0 7px 12px #a4cb4dbb;
+  cursor: pointer;
+  transition: background-color 0.3s ease,
+              color 0.3s ease,
+              box-shadow 0.3s ease,
+              transform 0.25s ease;
+  user-select: none;
+}
+.btn:hover,
+.btn:focus {
+  background-color: #9bad2a;
+  color: #e5f6b2;
+  box-shadow: 0 0 30px 8px #a9d94fdb;
+  outline: none;
+  transform: scale(1.05);
+}
+
+/* Footer */
+footer {
+  background-color: #1e3710;
+  color: #a0c970;
+  padding: 32px 40px;
+  font-weight: 500;
+  font-size: 1rem;
+  text-align: center;
+  letter-spacing: 0.5px;
+  box-shadow: inset 0 8px 20px #041401;
+  user-select: none;
+  animation: fadeInFooter 2s ease forwards;
+}
+footer p:first-child {
+  font-weight: 700;
+  margin-bottom: 7px;
+}
+footer p:last-child {
+  font-style: italic;
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  nav {
+    margin-left: 0;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 600px) {
+  nav a {
+    font-size: 0.95rem;
+    padding: 7px 12px;
+  }
+  h2 {
+    font-size: 2.2rem;
+  }
+}

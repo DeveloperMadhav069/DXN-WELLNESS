@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="DXN Wellness Cart and Secure Payment Gateway" />
+  <meta name="keywords" content="dxn, payment gateway, razorpay, wellness, health products, cart" />
+  <title>Cart & Payment - DXN Wellness</title>
+  <link rel="stylesheet" href="cart.css" />
+</head>
+<body>
+<header>
+  <div class="container flex-center-between slide-in">
+    <h1 class="logo"><a href="index.html" aria-label="DXN Wellness Home">DXN Wellness</a></h1>
+    <nav role="navigation" aria-label="Primary Navigation">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="about.html" class="nav-link">About Us</a>
+      <a href="products.html" class="nav-link">Our Products</a>
+      <a href="cart.html" class="nav-link active" aria-current="page">Cart</a>
+      <a href="contact.html" class="nav-link">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <h2>Your Cart</h2>
+  <div id="cart-items-container" aria-live="polite"></div>
+  <div id="cart-summary">Total: ₹<span id="cart-total">0</span></div>
+  <button id="pay-button" class="btn cta" disabled>Buy All Items</button>
+  <p id="payment-info">You will be redirected to secure Razorpay payment gateway to complete your purchase.</p>
+  <div id="payment-message" aria-live="assertive" role="alert"></div>
+</main>
+
+<footer>
+  <div class="container flex-center-between fade-in-footer">
+    <p>Thank you for trusting DXN Wellness &copy; 2024</p>
+    <p>Powered by Bharat Garg</p>
+  </div>
+</footer>
+
+<!-- Razorpay SDK -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="scripts.js"></script>
+<script>
+  (function() {
+    const cartContainer = document.getElementById('cart-items-container');
+    const cartTotalEl = document.getElementById('cart-total');
+    const payBtn = document.getElementById('pay-button');
+    const paymentMsg = document.getElementById('payment-message');
+
+    let cart = JSON.parse(localStorage.getItem('dxn_cart')) || [];
+
+    function renderCart() {
+      if (cart.length === 0) {
+        cartContainer.innerHTML = '<p>Your cart is empty. <a href="products.html" tabindex="0">Browse Products</a></p>';
+        payBtn.disabled = true;
+        cartTotalEl.textContent = '0';
+        return;
+      }
+
+      let markup = '<ul class="cart-list">';
+      cart.forEach((item, idx) => {
+        markup += `<li>
+          <strong>${item.name}</strong> - ₹${item.price} x
+          <input type="number" min="1" value="${item.quantity}" data-idx="${idx}" class="quantity-input" aria-label="Quantity for ${item.name}" />
+          = ₹${(item.price * item.quantity).toFixed(2)}
+          <button class="remove-btn" data-idx="${idx}" aria-label="Remove ${item.name} from cart">Remove</button>
+        </li>`;
+      });
+      markup += '</ul>';
+      cartContainer.innerHTML = markup;
+      payBtn.disabled = false;
+      updateTotal();
+      attachListeners();
+    }
+
+    function updateTotal() {
+      const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+      cartTotalEl.textContent = total.toFixed(2);
+    }
+
+    function attachListeners() {
+      document.querySelectorAll('.quantity-input').forEach(input => {
+        input.addEventListener('change', e => {
+          const idx = e.target.dataset.idx;
+          let qty = parseInt(e.target.value, 10);
+          if (qty < 1 || isNaN(qty)) {
+            e.target.value = cart[idx].quantity;
+            return;
+          }
+          cart[idx].quantity = qty;
+          localStorage.setItem('dxn_cart', JSON.stringify(cart));
+          renderCart();
+        });
+      });
+
+      document.querySelectorAll('.remove-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+          const idx = e.target.dataset.idx;
+          cart.splice(idx, 1);
+          localStorage.setItem('dxn_cart', JSON.stringify(cart));
+          renderCart();
+        });
+      });
+    }
+
+    payBtn.addEventListener('click', () => {
+      paymentMsg.textContent = '';
+      if (cart.length === 0) return;
+
+      const totalAmount = cart.reduce((sum, p) => sum + p.price * p.quantity, 0) * 100;
+
+      var options = {
+        key: "YOUR_RAZORPAY_KEY_ID",
+        amount: totalAmount.toFixed(0),
+        currency: "INR",
+        name: "DXN Wellness",
+        description: "Wellness products purchase",
+        handler: function(response){
+          paymentMsg.textContent = `Payment successful! Razorpay ID: ${response.razorpay_payment_id}. Please follow instructions sent via email to complete payment.`;
+          cart = [];
+          localStorage.setItem('dxn_cart', JSON.stringify(cart));
+          renderCart();
+        },
+        theme: { color: "#27962e" }
+      };
+
+      var rzp = new Razorpay(options);
+      rzp.open();
+    });
+
+    renderCart();
+  })();
+</script>
+</body>
+</html>
