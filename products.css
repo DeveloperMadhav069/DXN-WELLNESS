@@ -253,3 +253,32 @@ footer p:last-child {
     font-size: 2.2rem;
   }
 }
+/* Price list styles */
+.price-list {
+  list-style: disc inside;
+  margin-top: 10px;
+  color: #cee8aa;
+  font-weight: 600;
+  font-size: 0.95rem;
+  max-width: 260px;
+  text-align: left;
+}
+.price-list li {
+  margin-bottom: 4px;
+}
+
+/* Adjust product titles and paragraphs for this content style */
+.product-card h3 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+  color: #cee8aa;
+  text-align: center;
+}
+.product-card p {
+  font-size: 1.0rem;
+  color: #aeca8a;
+  text-align: center;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
